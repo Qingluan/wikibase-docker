@@ -26,6 +26,7 @@ ${DOLLAR}wgScriptPath = "/w";        // this should already have been configured
 ${DOLLAR}wgArticlePath = "/wiki/${DOLLAR}1";
 
 wfLoadSkin( 'Vector' );
+${DOLLAR}wgLogo = '/logo.png';
 
 # Wikibase
 require_once "${DOLLAR}IP/extensions/Wikibase/vendor/autoload.php";

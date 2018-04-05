@@ -3,7 +3,8 @@ FROM ubuntu as fetcher
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends unzip
 
-ADD https://github.com/wikimedia/mediawiki-extensions-Wikibase/archive/REL1_30.zip .
+#ADD https://github.com/wikimedia/mediawiki-extensions-Wikibase/archive/REL1_30.zip .
+ADD REL1_30.zip .
 
 # Creates /mediawiki-extensions-Wikibase-REL1_30
 RUN unzip REL1_30.zip && rm *.zip
@@ -13,6 +14,7 @@ FROM composer as composer
 
 COPY --from=fetcher /mediawiki-extensions-Wikibase-REL1_30 /Wikibase
 
+RUN composer config -g repo.packagist composer https://packagist.phpcomposer.com
 RUN cd /Wikibase && composer install --no-dev
 
 
@@ -32,6 +34,7 @@ COPY wait-for-it.sh /wait-for-it.sh
 COPY entrypoint.sh /entrypoint.sh
 COPY LocalSettings.php.template /LocalSettings.php.template
 COPY htaccess /var/www/html/.htaccess
+COPY --chown=www-data logo.png /var/www/html/logo.png
 
 RUN ln -s /var/www/html/ /var/www/html/w
 

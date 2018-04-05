@@ -3,7 +3,9 @@ FROM ubuntu as fetcher
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends unzip
 
-ADD https://search.maven.org/remotecontent?filepath=org/wikidata/query/rdf/service/0.3.0/service-0.3.0-dist.zip ./service-dist.zip
+#ADD https://search.maven.org/remotecontent?filepath=org/wikidata/query/rdf/service/0.3.0/service-0.3.0-dist.zip ./service-dist.zip
+ADD service-dist.zip .
+
 
 # Creates /wikidata-query-deploy
 RUN unzip service-dist.zip && rm service-dist.zip
@@ -37,8 +39,10 @@ COPY runUpdate.sh /runUpdate.sh
 COPY mwservices.json /templates/mwservices.json
 COPY RWStore.properties /wdqs/RWStore.properties
 COPY whitelist.txt /wdqs/whitelist.txt
+RUN chmod +x /*.sh
 
 # TODO is this actually needed?
 RUN chmod +x /wdqs/runUpdate.sh
+RUN chmod +x /wdqs/*.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

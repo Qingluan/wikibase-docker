@@ -3,10 +3,14 @@ FROM ubuntu as fetcher
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends unzip
 
-ADD https://github.com/wikimedia/wikidata-query-gui/archive/master.zip ./master.zip
+#ADD https://github.com/wikimedia/wikidata-query-gui/archive/master.zip ./master.zip
+ADD master.zip ./
 
 # Creates /wikidata-query-gui-master
 RUN unzip master.zip && rm master.zip
+
+#ENV http_proxy https://192.168.31.238:2222
+#ENV https_proxy https://192.168.31.238:2222
 
 
 FROM nginx:stable-alpine
@@ -31,11 +35,13 @@ RUN set -x; \
 COPY entrypoint.sh /entrypoint.sh
 COPY config.js /templates/config.js
 COPY default.conf /templates/default.conf
+RUN chmod +x /*.sh
 
 ENV LANGUAGE=en\
     BRAND_TITLE=DockerWikibaseQueryService\
     WIKIBASE_HOST="wikibase.svc"\
     WDQS_HOST="wdqs-proxy.svc"
+
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

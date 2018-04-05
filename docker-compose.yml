@@ -12,7 +12,7 @@ services:
     image: wikibase/wikibase
     restart: always
     build:
-      context: ./wikibase/1.29
+      context: ./wikibase/1.30
       dockerfile: Dockerfile
     links:
       - mysql
@@ -58,7 +58,7 @@ services:
     image: wikibase/wdqs
     restart: always
     build:
-      context: ./wdqs/0.2.5
+      context: ./wdqs/0.3.0
       dockerfile: Dockerfile
     volumes:
       - query-service-data:/wdqs/data
@@ -87,7 +87,7 @@ services:
     image: wikibase/wdqs
     restart: always
     build:
-      context: ./wdqs/0.2.5
+      context: ./wdqs/0.3.0
       dockerfile: Dockerfile
     command: /runUpdate.sh
     depends_on:
